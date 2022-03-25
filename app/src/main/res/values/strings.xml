@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ChatAppAndroid_2</string>
+    <string name="login_to_continue">Zaloguj się by kontynuować</string>
+    <string name="welcome_back">Witamy spowrotem!</string>
+</resources>

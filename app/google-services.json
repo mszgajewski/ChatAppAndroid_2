@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "856074129223",
+    "project_id": "javachatapp-aabfa",
+    "storage_bucket": "javachatapp-aabfa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856074129223:android:c6bde704a3163d0cf7c662",
+        "android_client_info": {
+          "package_name": "com.mszgajewski.chatappandroid_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856074129223-56deb9emipr5l385lss8sgub6topo7u2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mszgajewski.chatappandroid_2",
+            "certificate_hash": "f87d980cc5235128de33fc7f1f0593e8602cd38a"
+          }
+        },
+        {
+          "client_id": "856074129223-qv68c21qltmvval31feld66ob5t0fv5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgnTjsrotQuHY-bX1VJsUUtiMBmTKW8QI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856074129223-qv68c21qltmvval31feld66ob5t0fv5o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
