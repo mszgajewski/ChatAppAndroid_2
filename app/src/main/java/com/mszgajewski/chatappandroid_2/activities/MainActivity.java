@@ -15,16 +15,23 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mszgajewski.chatappandroid_2.R;
+import com.mszgajewski.chatappandroid_2.adapters.RecentConversationsAdapter;
 import com.mszgajewski.chatappandroid_2.databinding.ActivityMainBinding;
+import com.mszgajewski.chatappandroid_2.models.ChatMessage;
 import com.mszgajewski.chatappandroid_2.utilities.Constants;
 import com.mszgajewski.chatappandroid_2.utilities.PreferenceManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
+    private List<ChatMessage> conversations;
+    private RecentConversationsAdapter conversationsAdapter;
+    private FirebaseFirestore database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +39,17 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
+        init();
         loadUserDetails();
         getToken();
         setListener();
+    }
+
+    private void init() {
+        conversations = new ArrayList<>();
+        conversationsAdapter = new RecentConversationsAdapter(conversations);
+        binding.conversationRecyclerView.setAdapter(conversationsAdapter);
+        database = FirebaseFirestore.getInstance();
     }
 
     private void setListener(){
@@ -57,11 +72,10 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
     }
 
-
-
     private void updateToken(String token){
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS)
+        DocumentReference documentReference =
+                database.collection(Constants.KEY_COLLECTION_USERS)
                 .document(preferenceManager.getString(Constants.KEY_USER_ID));
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
                 .addOnFailureListener(e -> showToast("Błąd aktualizacji tokena"));
@@ -70,13 +84,16 @@ public class MainActivity extends AppCompatActivity {
     private void signOut() {
         showToast("Wylogowanie...");
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = database.collection(Constants.KEY_COLLECTION_USERS)
+        DocumentReference documentReference =
+                database.collection(Constants.KEY_COLLECTION_USERS)
                 .document(preferenceManager.getString(Constants.KEY_USER_ID));
+
         HashMap<String,Object> updates = new HashMap<>();
         updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
         documentReference.update(updates).addOnSuccessListener(unused -> {
             preferenceManager.clear();
             startActivity(new Intent(getApplicationContext(),SignInActivity.class));
+            finish();
         })
         .addOnFailureListener(e -> showToast("Błąd wylogowania"));
     }

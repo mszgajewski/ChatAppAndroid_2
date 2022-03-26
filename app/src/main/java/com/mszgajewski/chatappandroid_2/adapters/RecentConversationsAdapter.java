@@ -10,56 +10,49 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mszgajewski.chatappandroid_2.databinding.ItemContainerRecentConversionBinding;
-import com.mszgajewski.chatappandroid_2.databinding.ItemContainerUserBinding;
-import com.mszgajewski.chatappandroid_2.listeners.UserListener;
-import com.mszgajewski.chatappandroid_2.models.User;
+import com.mszgajewski.chatappandroid_2.models.ChatMessage;
 
 import java.util.List;
 
-public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConversationsAdapter.UserViewHolder> {
+public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConversationsAdapter.ConversionViewHolder> {
 
-    private final List<User> users;
-    private final UserListener userListener;
+    private final List<ChatMessage> chatMessages;
 
-    public RecentConversationsAdapter(List<User> users, UserListener userListener) {
-        this.users = users;
-        this.userListener = userListener;
+    public RecentConversationsAdapter(List<ChatMessage> chatMessages) {
+        this.chatMessages = chatMessages;
     }
 
     @NonNull
     @Override
-    public ConversationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemContainerRecentConversionBinding itemContainerRecentConversionBinding = ItemContainerRecentConversionBinding.inflate(
-                LayoutInflater.from(parent.getContext()),parent, false);
-
-        return new ConversationViewHolder(itemContainerRecentConversionBinding);
+    public ConversionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ConversionViewHolder(ItemContainerRecentConversionBinding.inflate(
+                LayoutInflater.from(parent.getContext()),parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ConversationViewHolder holder, int position) {
-        holder.setConversationData(users.get(position  ));
+    public void onBindViewHolder(@NonNull ConversionViewHolder holder, int position) {
+        holder.setData(chatMessages.get(position));
     }
 
     @Override
-    public int getItemCount() { return users.size(); }
+    public int getItemCount() { return chatMessages.size(); }
 
-    class ConversationViewHolder extends RecyclerView.ViewHolder {
+    class ConversionViewHolder extends RecyclerView.ViewHolder {
         ItemContainerRecentConversionBinding binding;
 
-         ConversationViewHolder(ItemContainerRecentConversionBinding itemContainerRecentConversionBinding) {
+         ConversionViewHolder(ItemContainerRecentConversionBinding itemContainerRecentConversionBinding) {
             super(itemContainerRecentConversionBinding.getRoot());
             binding = itemContainerRecentConversionBinding;
         }
 
-        void setConversationData(User user) {
-             binding.textName.setText(user.name);
-             binding.textEmail.setText(user.email);
-             binding.imageProfile.setImageBitmap(getConversationImage(user.image));
-             binding.getRoot().setOnClickListener(v -> userListener.onUserClicked(user));
+        void setData(ChatMessage chatMessage) {
+             binding.textName.setText(chatMessage.conversationName);
+             binding.imageProfile.setImageBitmap(getConversionImage(chatMessage.conversationImage));
+             binding.textRecentMessage.setText(chatMessage.message);
         }
     }
 
-    private Bitmap getConversationImage(String encodedImage){
+    private Bitmap getConversionImage(String encodedImage){
         byte[] bytes = Base64.decode(encodedImage,Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes,0, bytes.length);
     }
