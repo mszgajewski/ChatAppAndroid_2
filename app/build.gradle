@@ -25,6 +25,7 @@ android {
     }
     buildFeatures {viewBinding true
     }
+    namespace 'com.mszgajewski.chatappandroid_2'
 }
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
